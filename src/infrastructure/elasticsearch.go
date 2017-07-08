@@ -122,3 +122,5 @@ func (es *ElasticsearchStore) lookupBenchmarks(f interfaces.Filter) elastic.Bool
 
 	return *query
 }
+
+// Modified
