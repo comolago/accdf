@@ -102,5 +102,10 @@ func (es *ElasticsearchStore) lookupBenchmarks(f interfaces.Filter) elastic.Bool
 		nestedPlatformsQuery = append(nestedPlatformsQuery, elastic.NewNestedQuery("Platforms>Platform", &platformsQuery[i]))
 		query = query.Filter(nestedPlatformsQuery[i])
 	}
+	var mainDocQuery elastic.BoolQuery
+	mainDocQuery.Filter(
+		elastic.NewMatchQuery("Name", filter.Name),
+	)
+	query = query.Filter(&mainDocQuery)
 	return *query
 }
