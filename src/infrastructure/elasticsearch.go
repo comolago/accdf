@@ -93,25 +93,28 @@ func (es *ElasticsearchStore) lookupBenchmarks(f interfaces.Filter) elastic.Bool
 	// if (len(filter.Platforms) > 0 ) {
 	fmt.Printf("LEN=%d\n", len(filter.Platforms))
 
-	//platformsQuery *elastic.BoolQuery
-
-	//platformsQuery := elastic.NewBoolQuery()
-	//var platformsQuery = new(elastic.BoolQuery)
-	var platformsQuery [2]elastic.BoolQuery
-	//platformsQuery := elastic.NewBoolQuery()
-	//platformsQuery2 := elastic.NewBoolQuery()
+	//var platformsQuery [2]elastic.BoolQuery
+	var platformsQuery []elastic.BoolQuery
 	//fmt.Printf("Benchmark.Platforms[%d].Id=%s\n", i, filter.Platforms[i].Id)
-	platformsQuery[0].Filter(
+	/*platformsQuery[0].Filter(
 
 		elastic.NewMatchQuery("Platforms>Platform.Id", filter.Platforms[0].Id),
 		elastic.NewMatchQuery("Platforms>Platform.Version", filter.Platforms[0].Version),
 		//elastic.NewMatchQuery("Name", "checkconn"),
 
-	)
-	platformsQuery[1].Filter(
+	)*/
+	for i := 0; i < len(filter.Platforms); i++ {
+		var boolQuery elastic.BoolQuery
+		platformsQuery = append(platformsQuery, *boolQuery.Filter(
+			elastic.NewMatchQuery("Platforms>Platform.Id", filter.Platforms[i].Id),
+			elastic.NewMatchQuery("Platforms>Platform.Version", filter.Platforms[i].Version),
+		))
+	}
+
+	/*platformsQuery[1].Filter(
 		elastic.NewMatchQuery("Platforms>Platform.Id", filter.Platforms[1].Id),
 		elastic.NewMatchQuery("Platforms>Platform.Version", filter.Platforms[1].Version),
-	)
+	)*/
 	var nestedPlatformsQuery [2]*elastic.NestedQuery
 	nestedPlatformsQuery[0] = elastic.NewNestedQuery("Platforms>Platform", &platformsQuery[0])
 	nestedPlatformsQuery[1] = elastic.NewNestedQuery("Platforms>Platform", &platformsQuery[1])
