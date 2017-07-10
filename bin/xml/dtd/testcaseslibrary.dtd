@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ELEMENT TestCasesLibrary ( ComplianceGroups) >
+<!ATTLIST TestCasesLibrary name CDATA #REQUIRED>
+<!ATTLIST TestCasesLibrary label CDATA #REQUIRED>
+<!ELEMENT  ComplianceGroups ( ComplianceGroup+ ) >
+<!ELEMENT  ComplianceGroup ( Description, TestCases+ ) >
+<!ATTLIST  ComplianceGroup name CDATA #REQUIRED>
+<!ATTLIST  ComplianceGroup label CDATA #REQUIRED>
+<!ATTLIST  ComplianceGroup group CDATA #REQUIRED>
+<!ELEMENT  Description (#PCDATA) >
+<!ELEMENT TestCases ( TestCase+ ) >
+<!ELEMENT TestCase ( Description, Rationale, Dependencies?, Inject?, Tests, Dictionary, ) >
+<!ATTLIST TestCase name CDATA #REQUIRED>
+<!ATTLIST TestCase label CDATA #REQUIRED>
+<!ATTLIST TestCase benchmark CDATA #REQUIRED>
+<!ATTLIST TestCase id CDATA #REQUIRED>
+<!ELEMENT  Rationale ( Description ) >
+<!ATTLIST  Rationale severity CDATA #REQUIRED>
+<!ATTLIST  Rationale tolerancepercentage CDATA #REQUIRED>
+<!ATTLIST  Rationale owner CDATA #REQUIRED>
+<!ELEMENT Dependencies ( Dependency+ ) >
+<!ELEMENT Dependency ( EMPTY ) >
+<!ATTLIST Dependency name CDATA #REQUIRED>
+<!ATTLIST Dependency label CDATA #REQUIRED>
+<!ATTLIST Dependency compliancegroup CDATA #REQUIRED>
+<!ATTLIST Dependency type CDATA #REQUIRED>
+<!ELEMENT  Tests ( Test+ ) >
+<!ELEMENT  Test ( TestSteps+ ) >
+<!ATTLIST Test name CDATA #REQUIRED>
+<!ATTLIST Test label CDATA #REQUIRED>
+<!ELEMENT  TestSteps ( TestStep) >
+<!ELEMENT  TestStep ( EMPTY) >
+<!ATTLIST TestStep id CDATA #REQUIRED>
+<!ATTLIST TestStep ip CDATA #IMPLIED>
+<!ATTLIST TestStep protocol CDATA #IMPLIED>
+<!ATTLIST TestStep port CDATA #IMPLIED>
+<!ATTLIST TestStep description CDATA #IMPLIED>
+<!ELEMENT  Inject ( Classes ) >
+<!ELEMENT  Classes ( Class+) >
+<!ELEMENT  Class ( #PCDATA) >
