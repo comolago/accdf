@@ -1,0 +1,30 @@
+<!DOCTYPE TestCasesLibrary SYSTEM "testcaselibrary.dtd">
+<TestCasesLibrary name="UNIX Library" label="unix" group="operating-systems">
+  <ComplianceGroups>
+    <ComplianceGroup name="Base Install" label="baseinstall">
+      <Description>This compliance group checks compliance to the base installation baseline</Description>
+      <TestCases> 
+        <TestCase id="000000" name="LDAP Servers" label="checkconn-ldap" benchmark="checkconn">
+          <Description>Perform basic connectivity test of LDAP servers</Description>
+          <Rationale severity="critical" tolerancepercentage="66%" owner="Telecom Group">
+            LDAP servers should be reachable to allow users authentication and authorization
+          </Rationale>
+          <Tests>
+            <Test name="ldap01.carcano.local" label="ldap01.carcano.local">
+              <TestSteps> 
+                <TestStep id="1" ip="192.168.10.8" protocol="tcp" port="389" description "LDAP" /> 
+                <TestStep id="2" ip="192.168.10.8" protocol="tcp" port="636" description "LDAPS" /> 
+              </TestSteps> 
+            </Test>      
+            <Test name="ldap02.carcano.local" label="ldap02.carcano.local">
+              <TestSteps> 
+                <TestStep id="1" ip="192.168.10.9" protocol="tcp" port="389" description "LDAP" /> 
+                <TestStep id="2" ip="192.168.10.9" protocol="tcp" port="636" description "LDAPS" /> 
+              </TestSteps> 
+            </Test>      
+          </Tests>      
+        </TestCase> 
+      </TestCases> 
+    </ComplianceGroup>
+  </ComplianceGroups>
+</TestCasesLibrary>
