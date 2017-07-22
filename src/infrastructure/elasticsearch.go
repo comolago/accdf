@@ -50,14 +50,19 @@ func (es *ElasticsearchStore) open() error {
 // Interface: DbHandler
 // Performs a lookup applying f filter
 func (es *ElasticsearchStore) Lookup(f interfaces.Filter) error {
-	if f, ok := f.(domain.TestCase); ok {
-		fmt.Printf("Testcase.Name=%s\n", f.Name)
-	}
+	/*if s, ok := f.(domain.TestCase); ok {
+
+	}*/
 	var query elastic.BoolQuery
 	var objTypeIdx int
-	if f, ok := f.(domain.Benchmark); ok {
-		query = es.lookupBenchmarks(f)
+	if s, ok := f.(domain.Benchmark); ok {
+		query = es.lookupBenchmarks(s)
 		objTypeIdx = 1
+	} else if s, ok := f.(domain.TestCase); ok {
+
+		fmt.Printf("Testcase.Name=%s\n", s.Name)
+		query = es.lookupTestcases(s)
+		objTypeIdx = 2
 	}
 	if err := es.open(); err != nil {
 		return err
@@ -72,6 +77,12 @@ func (es *ElasticsearchStore) Lookup(f interfaces.Filter) error {
 			es.values = append(es.values, iT.(*domain.Benchmark))
 			//fmt.Printf("Elasticsearch Name: %s\n", iT.(*domain.Benchmark).GetName())
 		}
+	} else if objTypeIdx == 2 {
+		// Testcases
+		for _, iT := range res.Each(reflect.TypeOf(&domain.TestCase{})) {
+			es.values = append(es.values, iT.(*domain.TestCase))
+			//fmt.Printf("Elasticsearch Name: %s\n", iT.(*domain.Testcase).GetName())
+		}
 	}
 	if es.values != nil {
 		//fmt.Printf("Elasticsearch Name: %s\n", es.values[0].GetName())
@@ -82,6 +93,34 @@ func (es *ElasticsearchStore) Lookup(f interfaces.Filter) error {
 		fmt.Printf("%s\n", data)
 	}
 	return nil
+}
+
+// creates a benchmark filter
+func (es *ElasticsearchStore) lookupTestcases(f interfaces.Filter) elastic.BoolQuery {
+	fmt.Printf("QUI\n")
+	filter := f.(domain.TestCase)
+	query := elastic.NewBoolQuery()
+
+	//fmt.Printf("LEN=%d\n", len(filter.Tests))
+	var testsQuery []elastic.BoolQuery
+	var nestedTestsQuery []*elastic.NestedQuery
+	for i := 0; i < len(filter.Tests); i++ {
+		//fmt.Printf("Benchmark.Tests[%d].Name=%s\n", i, filter.Tests[i].Name)
+		var boolQuery elastic.BoolQuery
+		testsQuery = append(testsQuery, *boolQuery.Filter(
+			elastic.NewMatchQuery("Tests>Test.Name", filter.Tests[i].Name),
+			elastic.NewMatchQuery("Tests>Test.Label", filter.Tests[i].Label),
+		))
+		nestedTestsQuery = append(nestedTestsQuery, elastic.NewNestedQuery("Tests>Test", &testsQuery[i]))
+		query = query.Filter(nestedTestsQuery[i])
+	}
+
+	var mainDocQuery elastic.BoolQuery
+	mainDocQuery.Filter(
+		elastic.NewMatchQuery("Name", filter.Name),
+	)
+	query = query.Filter(&mainDocQuery)
+	return *query
 }
 
 // creates a benchmark filter
