@@ -3,13 +3,15 @@ package infrastructure
 import (
 	"context"
 	"domain"
-	"encoding/xml"
+
 	"fmt"
 	"interfaces"
 	"reflect"
 
 	"github.com/olivere/elastic"
 )
+
+// 	"encoding/xml"
 
 var objectTypes = [...]string{
 	1: "benchmarks",
@@ -49,7 +51,7 @@ func (es *ElasticsearchStore) open() error {
 
 // Interface: DbHandler
 // Performs a lookup applying f filter
-func (es *ElasticsearchStore) Lookup(f interfaces.Filter) error {
+func (es *ElasticsearchStore) Lookup(f interfaces.Filter) ([]domain.Domain, error) {
 	/*if s, ok := f.(domain.TestCase); ok {
 
 	}*/
@@ -65,11 +67,11 @@ func (es *ElasticsearchStore) Lookup(f interfaces.Filter) error {
 		objTypeIdx = 2
 	}
 	if err := es.open(); err != nil {
-		return err
+		return nil, err
 	}
 	res, err := es.connection.Search(es.Index).Type(objectTypes[objTypeIdx]).Query(&query).Do(context.Background())
 	if err != nil {
-		return interfaces.ErrHandler{5, "func (es *ElasticsearchStore)", "Lookup", ""}
+		return nil, interfaces.ErrHandler{5, "func (es *ElasticsearchStore)", "Lookup", ""}
 	}
 	if objTypeIdx == 1 {
 		// Benchmarks
@@ -86,13 +88,14 @@ func (es *ElasticsearchStore) Lookup(f interfaces.Filter) error {
 	}
 	if es.values != nil {
 		//fmt.Printf("Elasticsearch Name: %s\n", es.values[0].GetName())
-		data, err := xml.Marshal(es.values[0])
+		/*data, err := xml.Marshal(es.values[0])
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("%s\n", data)
+		fmt.Printf("%s\n", data)*/
+		return es.values, nil
 	}
-	return nil
+	return nil, nil
 }
 
 // creates a benchmark filter

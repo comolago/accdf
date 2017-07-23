@@ -1,13 +1,15 @@
 package main
 
 import (
+	"domain"
+	"encoding/xml"
 	"fmt"
 	"infrastructure"
 	"interfaces"
 	"os"
 )
 
-//	"domain"
+//
 //	"path/filepath"
 //"encoding/xml"
 
@@ -24,24 +26,32 @@ func main() {
 	config.Repositories = interfaces.CreateRepositoriesMap()
 	config.Repositories.AddRepo(elasticSearch, "Benchmarks")
 	config.Repositories.AddRepo(elasticSearch, "Testcases")
-	/*
-		// define a filter
-		var filter domain.Benchmark
-		filter.Name = "checkconn"
-		filter.AddPlatform("rhel", "Red Hat Enterprise Linux", "6.x")
-		filter.AddPlatform("rhel", "Red Hat Enterprise Linux", "7.x")
 
-		//var filter domain.TestCase
-		//filter.Name = "LDAP Servers"
-		//filter.AddTest("ldap01.carcano.local", "ldap01.carcano.local")
+	// define a filter
+	var filter domain.Benchmark
+	filter.Name = "checkconn"
+	filter.AddPlatform("rhel", "Red Hat Enterprise Linux", "6.x")
+	filter.AddPlatform("rhel", "Red Hat Enterprise Linux", "7.x")
 
-		// performs a lookup using a filter
-		if err := config.Repositories.Lookup(filter, "Benchmarks"); err != nil {
-			//if err := config.Repositories.Lookup(filter, "Testcases"); err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+	//var filter domain.TestCase
+	//filter.Name = "LDAP Servers"
+	//filter.AddTest("ldap01.carcano.local", "ldap01.carcano.local")
+
+	// performs a lookup using a filter
+	if values, err := config.Repositories.Lookup(filter, "Benchmarks"); err != nil {
+		//if err := config.Repositories.Lookup(filter, "Testcases"); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	} else {
+		_, err := xml.Marshal(values[0])
+		if err != nil {
+			panic(err)
 		}
+		//fmt.Printf("%s\n", data)
+		fmt.Printf("%s\n", values[0].GetId())
+	}
 
+	/*
 		BenchmarkFile, err := filepath.Abs("benchmark.xml")
 		if err != nil {
 			fmt.Println(err)
@@ -68,10 +78,10 @@ func main() {
 			os.Exit(1)
 		}
 	*/
-	if err := config.Repositories.DeleteDocumentById("benchmarks", "AV1vvZfZJNdVlB7WYRR-", "Benchmarks"); err != nil {
+	/*if err := config.Repositories.DeleteDocumentById("benchmarks", "AV1vvZfZJNdVlB7WYRR-", "Benchmarks"); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
-	}
+	}*/
 
 	fmt.Printf("\n\nFinito\n")
 }
