@@ -1,5 +1,9 @@
 package interfaces
 
+import (
+	"domain"
+)
+
 // Define a repository handler structure
 type Repositories struct {
 	dbHandlers map[string]DbHandler
@@ -23,7 +27,7 @@ func (db *Repositories) AddRepo(dbh DbHandler, repo string) {
 
 // Interface: Repositories
 // Lookups repository specified by repo argument applying f filter
-func (db *Repositories) Lookup(f Filter, repo string) error {
+func (db *Repositories) Lookup(f Filter, repo string) ([]domain.Domain, error) {
 	return db.dbHandlers[repo].Lookup(f)
 }
 
