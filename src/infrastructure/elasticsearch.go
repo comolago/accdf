@@ -27,7 +27,7 @@ type ElasticsearchStore struct {
 }
 
 // Open a connection to es.URL and tests the existence od es.Index
-func (es *ElasticsearchStore) open() error {
+func (es *ElasticsearchStore) Open() error {
 	if es.URL == "" {
 		return interfaces.ErrHandler{2, "func (es *ElasticsearchStore)", "open", ""}
 	}
@@ -66,9 +66,9 @@ func (es *ElasticsearchStore) Lookup(f interfaces.Filter) ([]domain.Domain, erro
 		query = es.lookupTestcases(s)
 		objTypeIdx = 2
 	}
-	if err := es.open(); err != nil {
+	/*if err := es.open(); err != nil {
 		return nil, err
-	}
+	}*/
 	res, err := es.connection.Search(es.Index).Type(objectTypes[objTypeIdx]).Query(&query).Do(context.Background())
 	if err != nil {
 		return nil, interfaces.ErrHandler{5, "func (es *ElasticsearchStore)", "Lookup", ""}

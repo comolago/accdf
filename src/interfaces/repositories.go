@@ -21,8 +21,9 @@ func CreateRepositoriesMap() *Repositories {
 // Interface: Repositories
 // Add the supplied DbHandler identified by repo argument to repository
 // handler map
-func (db *Repositories) AddRepo(dbh DbHandler, repo string) {
+func (db *Repositories) AddRepo(dbh DbHandler, repo string) error {
 	db.dbHandlers[repo] = dbh
+	return db.dbHandlers[repo].Open()
 }
 
 // Interface: Repositories

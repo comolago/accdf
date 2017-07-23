@@ -15,6 +15,7 @@ type DbHandler interface {
 	// Lookup into the backend
 	// NoSQL: lookups applying the supplied filter
 	// SQL: execute the SQL statement supplied as filter
+	Open() error
 	Lookup(f Filter) ([]domain.Domain, error)
 	AddDocument(d Document) error
 	DeleteDocumentById(objtype string, id string) error
@@ -27,7 +28,7 @@ type repositories interface {
 	Lookup(f Filter, repo string) ([]domain.Domain, error)
 	AddDocument(d Document, repo string) error
 	DeleteDocumentById(objtype string, id string, repo string) error
-	AddRepo(dbh DbHandler, repo string)
+	AddRepo(dbh DbHandler, repo string) error
 }
 
 type Config struct {
