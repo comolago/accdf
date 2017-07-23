@@ -1,8 +1,12 @@
 package domain
 
+import (
+	"io"
+)
+
 type Domain interface {
-	GetId() string
-	SetId(i string)
-	GetName() string
-	SetName(n string)
+	FromXML(reader io.Reader) error
+	FromJson(reader io.Reader) error
+	ToXML() ([]byte, error)
+	ToJson() ([]byte, error)
 }

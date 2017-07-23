@@ -1,5 +1,11 @@
 package domain
 
+import (
+	"encoding/json"
+	"encoding/xml"
+	"io"
+)
+
 type Details struct {
 	Severity            string `xml:"severity,attr"            json:"severity,attr"`
 	Tolerancepercentage string `xml:"tolerancepercentage,attr" json:"tolerancepercentage,attr"`
@@ -51,4 +57,34 @@ func (t *TestCase) GetName() string {
 
 func (t *TestCase) SetName(n string) {
 	t.Name = n
+}
+
+func (t *TestCase) FromXML(reader io.Reader) error {
+	if err := xml.NewDecoder(reader).Decode(&t); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TestCase) FromJson(reader io.Reader) error {
+	if err := json.NewDecoder(reader).Decode(&t); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TestCase) ToXML() ([]byte, error) {
+	data, err := xml.Marshal(&t)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (t *TestCase) ToJson() ([]byte, error) {
+	data, err := json.Marshal(&t)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }

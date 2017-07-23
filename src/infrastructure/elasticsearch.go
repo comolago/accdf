@@ -148,3 +148,28 @@ func (es *ElasticsearchStore) lookupBenchmarks(f interfaces.Filter) elastic.Bool
 	query = query.Filter(&mainDocQuery)
 	return *query
 }
+
+// Interface: DbHandler
+// add whatsoever Document
+func (es *ElasticsearchStore) AddDocument(d interfaces.Document) error {
+	var objTypeIdx int
+	if _, ok := d.(domain.Benchmark); ok {
+		objTypeIdx = 1
+	}
+	_, err := es.connection.Index().Index(es.Index).Type(objectTypes[objTypeIdx]).Id("").BodyJson(d).Do(context.Background())
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Interface: DbHandler
+// delete whatsoever Document
+func (es *ElasticsearchStore) DeleteDocumentById(objtype string, id string) error {
+	fmt.Printf("Deleting Index=%s objecttype=%s id=%s\n", es.Index, objtype, id)
+	_, err := es.connection.Delete().Index(es.Index).Type(objtype).Id(id).Do(context.Background())
+	if err != nil {
+		return err
+	}
+	return nil
+}

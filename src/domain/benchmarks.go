@@ -1,5 +1,11 @@
 package domain
 
+import (
+	"encoding/json"
+	"encoding/xml"
+	"io"
+)
+
 type Platform struct {
 	Id      string `xml:"id,attr"      json:"id,attr"`
 	Label   string `xml:"label,attr"   json:"label,attr"`
@@ -49,4 +55,34 @@ func (b *Benchmark) GetName() string {
 
 func (b *Benchmark) SetName(n string) {
 	b.Name = n
+}
+
+func (b *Benchmark) FromXML(reader io.Reader) error {
+	if err := xml.NewDecoder(reader).Decode(&b); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (b *Benchmark) FromJson(reader io.Reader) error {
+	if err := json.NewDecoder(reader).Decode(&b); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (b *Benchmark) ToXML() ([]byte, error) {
+	data, err := xml.Marshal(&b)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (b *Benchmark) ToJson() ([]byte, error) {
+	data, err := json.Marshal(&b)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }
