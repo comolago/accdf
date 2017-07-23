@@ -24,5 +24,13 @@ func (db *Repositories) AddRepo(dbh DbHandler, repo string) {
 // Interface: Repositories
 // Lookups repository specified by repo argument applying f filter
 func (db *Repositories) Lookup(f Filter, repo string) error {
-	return db.dbHandlers[repo].Lookup(f) //, repo)
+	return db.dbHandlers[repo].Lookup(f)
+}
+
+func (db *Repositories) AddDocument(d Document, repo string) error {
+	return db.dbHandlers[repo].AddDocument(d)
+}
+
+func (db *Repositories) DeleteDocumentById(objtype string, id string, repo string) error {
+	return db.dbHandlers[repo].DeleteDocumentById(objtype, id)
 }

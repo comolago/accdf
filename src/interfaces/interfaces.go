@@ -1,6 +1,7 @@
 package interfaces
 
 type Filter interface{}
+type Document interface{}
 
 // DbHandler should be implemented using the connection library
 // of the choosed backend. Foe example a DbHandler implementation
@@ -11,6 +12,8 @@ type DbHandler interface {
 	// NoSQL: lookups applying the supplied filter
 	// SQL: execute the SQL statement supplied as filter
 	Lookup(f Filter) error
+	AddDocument(d Document) error
+	DeleteDocumentById(objtype string, id string) error
 }
 
 // Methods used to access data are tightly coupled with the chosen backend
@@ -18,6 +21,8 @@ type DbHandler interface {
 // loosely coupled
 type repositories interface {
 	Lookup(f Filter, repo string) error
+	AddDocument(d Document, repo string) error
+	DeleteDocumentById(objtype string, id string, repo string) error
 	AddRepo(dbh DbHandler, repo string)
 }
 
