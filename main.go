@@ -24,8 +24,11 @@ func main() {
 	config := new(interfaces.Config)
 	// Add available repositories to the configuration handler
 	config.Repositories = interfaces.CreateRepositoriesMap()
-	config.Repositories.AddRepo(elasticSearch, "Benchmarks")
-	config.Repositories.AddRepo(elasticSearch, "Testcases")
+	if err := config.Repositories.AddRepo(elasticSearch, "Benchmarks"); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	//config.Repositories.AddRepo(elasticSearch, "Testcases")
 
 	// define a filter
 	var filter domain.Benchmark
@@ -78,10 +81,10 @@ func main() {
 			os.Exit(1)
 		}
 	*/
-	/*if err := config.Repositories.DeleteDocumentById("benchmarks", "AV1vvZfZJNdVlB7WYRR-", "Benchmarks"); err != nil {
+	if err := config.Repositories.DeleteDocumentById("benchmarks", "AV1wxsDxjObW0cXTTPhb", "Benchmarks"); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
-	}*/
+	}
 
 	fmt.Printf("\n\nFinito\n")
 }
