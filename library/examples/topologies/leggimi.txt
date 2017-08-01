@@ -1,0 +1,1 @@
+xpath topology.xml "/Topology/Endpoints/Endpoint[@id=/Topology/Interconnections/Interconnection[@from=/Topology/Systems/System[@name='myhost01']/@id]/@to]/@ip"

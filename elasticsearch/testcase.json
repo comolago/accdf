@@ -1,0 +1,57 @@
+curl -i -XPOST 'http://localhost:9200/accdf/testcases' -d '
+{
+      "Id": "000000",
+      "Name": "LDAP Servers",
+      "Label": "checkconn-ldap",
+      "BenchmarkId": "000000000",
+      "Benchmark": "checkconn",
+      "Description": "Perform basic connectivity test of LDAP servers",
+      "Details": {
+        "Severity": "critical",
+        "Tolerancepercentage": "66%",
+        "Owner": "Telecom Group",
+        "#text": "LDAP servers should be reachable to allow users authentication and authorization"
+      },
+      "Tests>Test": [
+         {
+            "Name": "ldap01.carcano.local",
+            "Label": "ldap01.carcano.local",
+            "TestSteps>TestStep": [
+                {
+                  "Id": "1",
+                  "Ip": "192.168.10.8",
+                  "Protocol": "tcp",
+                  "Port": "389",
+                  "Description": "LDAP"
+                },
+                {
+                  "Id": "2",
+                  "Ip": "192.168.10.8",
+                  "Protocol": "tcp",
+                  "Port": "636",
+                  "Description": "LDAPS"
+                }
+              ]
+         },
+         {
+            "Name": "ldap02.carcano.local",
+            "Label": "ldap02.carcano.local",
+            "TestSteps>TestStep": [
+                {
+                  "Id": "1",
+                  "Ip": "192.168.10.9",
+                  "Protocol": "tcp",
+                  "Port": "389",
+                  "Description": "LDAP"
+                },
+                {
+                  "Id": "2",
+                  "Ip": "192.168.10.9",
+                  "Protocol": "tcp",
+                  "Port": "636",
+                  "Description": "LDAPS"
+                }
+              ]
+         }
+      ]
+}'
