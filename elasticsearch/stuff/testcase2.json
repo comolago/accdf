@@ -1,0 +1,8 @@
+curl -i -XPOST 'http://localhost:9200/accdf/testcases' -d '
+      "Id": "000000",
+      "Name": "LDAP Servers",
+      "Label": "checkconn-ldap",
+      "BenchmarkId": "000000000",
+      "Benchmark": "checkconn",
+      "Description": "Perform basic connectivity test of LDAP servers"
+'
