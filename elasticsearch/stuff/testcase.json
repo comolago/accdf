@@ -1,0 +1,69 @@
+curl -i -XPOST 'http://localhost:9200/accdf/testcases' -d '
+{
+  "TestCases": {
+    "TestCase": {
+      "-id": "000000",
+      "-name": "LDAP Servers",
+      "-label": "checkconn-ldap",
+      "-benchmark": "checkconn",
+      "Description": "Perform basic connectivity test of LDAP servers",
+      "Rationale": {
+        "-severity": "critical",
+        "-tolerancepercentage": "66%",
+        "-owner": "Telecom Group",
+        "#text": "
+            LDAP servers should be reachable to allow users authentication and authorization
+          "
+      },
+      "Tests": {
+        "Test": [
+          {
+            "-name": "ldap01.carcano.local",
+            "-label": "ldap01.carcano.local",
+            "TestSteps": {
+              "TestStep": [
+                {
+                  "-id": "1",
+                  "-ip": "192.168.10.8",
+                  "-protocol": "tcp",
+                  "-port": "389",
+                  "-description": "LDAP"
+                },
+                {
+                  "-id": "2",
+                  "-ip": "192.168.10.8",
+                  "-protocol": "tcp",
+                  "-port": "636",
+                  "-description": "LDAPS"
+                }
+              ]
+            }
+          },
+          {
+            "-name": "ldap02.carcano.local",
+            "-label": "ldap02.carcano.local",
+            "TestSteps": {
+              "TestStep": [
+                {
+                  "-id": "1",
+                  "-ip": "192.168.10.9",
+                  "-protocol": "tcp",
+                  "-port": "389",
+                  "-description": "LDAP"
+                },
+                {
+                  "-id": "2",
+                  "-ip": "192.168.10.9",
+                  "-protocol": "tcp",
+                  "-port": "636",
+                  "-description": "LDAPS"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+'
