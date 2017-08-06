@@ -12,10 +12,15 @@ type Repositories struct {
 }
 
 // Creates a repository handler map
-func CreateRepositoriesMap() *Repositories {
+/*func CreateRepositoriesMap() *Repositories {
 	repository := new(Repositories)
 	repository.dbHandlers = make(map[string]DbHandler)
 	return repository
+}*/
+
+// Creates a repository handler map
+func (db *Repositories) Init() {
+	db.dbHandlers = make(map[string]DbHandler)
 }
 
 // Interface: Repositories
