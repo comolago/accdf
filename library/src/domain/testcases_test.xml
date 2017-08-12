@@ -1,11 +1,3 @@
-<?xml version="1.0"?>
-<!DOCTYPE TestSuitesLibrary SYSTEM "dtd/testsuiteslibrary.dtd">
-<?xml-stylesheet type="text/xsl" href="xsl/testsuiteslibrary.xsl"?>
-<TestSuitesLibrary name="unix" title="UNIX test library">
-  <TestSuites>
-    <TestSuite name="connectivity" title="Connectivity">
-      <Description> bla bla bla</Description>
-        <TestCases> 
           <TestCase id="000000" title="LDAP Servers Reachability" name="reachability-ldap" benchmark="checkconn">
           <Description>Perform basic connectivity test of LDAP servers</Description>
           <Inject>
@@ -29,7 +21,3 @@
             </Test>         
           </Tests>      
         </TestCase> 
-      </TestCases>
-    </TestSuite>
-  </TestSuites>
-</TestSuitesLibrary>
