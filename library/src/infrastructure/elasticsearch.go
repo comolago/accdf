@@ -112,7 +112,7 @@ func (es *ElasticsearchStore) lookupTestcases(f interfaces.Filter) elastic.BoolQ
 		var boolQuery elastic.BoolQuery
 		testsQuery = append(testsQuery, *boolQuery.Filter(
 			elastic.NewMatchQuery("Tests>Test.Name", filter.Tests[i].Name),
-			elastic.NewMatchQuery("Tests>Test.Label", filter.Tests[i].Label),
+			elastic.NewMatchQuery("Tests>Test.Title", filter.Tests[i].Title),
 		))
 		nestedTestsQuery = append(nestedTestsQuery, elastic.NewNestedQuery("Tests>Test", &testsQuery[i]))
 		query = query.Filter(nestedTestsQuery[i])
@@ -146,7 +146,7 @@ func (es *ElasticsearchStore) lookupBenchmarks(f interfaces.Filter) elastic.Bool
 	}
 	var mainDocQuery elastic.BoolQuery
 	mainDocQuery.Filter(
-		elastic.NewMatchQuery("Name", filter.Name),
+		elastic.NewMatchQuery("name", filter.Name),
 	)
 	query = query.Filter(&mainDocQuery)
 	return *query

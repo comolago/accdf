@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"testing"
 )
 
 /*func TestNewTestCase(t *testing.T) {
@@ -43,37 +42,31 @@ import (
 	testToJson(t, tc)
 }*/
 
-func TestLoadFromFile(t *testing.T) {
-	fmt.Printf("\nTestLoadFromFile\n")
-	BenchmarkFile, err := filepath.Abs("testcases_test.xml")
+func testcases_test() {
+	fmt.Printf("\ntestcases_test\n")
+	BenchmarkFile, err := filepath.Abs("../../test/xml/testcases/000.xml")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	file, err := os.Open(BenchmarkFile)
+	inputFile, err := os.Open(BenchmarkFile)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	defer file.Close()
+	defer inputFile.Close()
 	tc := new(TestCase)
-	err = tc.FromXML(file)
+	err = tc.FromXML(inputFile)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	testToXML(t, tc)
-	testToJson(t, tc)
-}
-
-func testToXML(t *testing.T, tc *TestCase) {
-	fmt.Printf("\ntestToXML()\n\n")
 	data, _ := tc.ToXML()
-	fmt.Printf("\n%s\n", data)
-}
-
-func testToJson(t *testing.T, tc *TestCase) {
-	fmt.Printf("\ntestToJson()\n\n")
-	data, _ := tc.ToJson()
-	fmt.Printf("\n%s\n", data)
+	outputFile, err := os.Create("../../tmp/xml/testcases/000.xml")
+	check(err)
+	defer outputFile.Close()
+	n, err := outputFile.Write(data)
+	check(err)
+	fmt.Printf("wrote %d bytes\n", n)
+	outputFile.Sync()
 }

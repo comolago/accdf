@@ -30,7 +30,8 @@ type Benchmark struct {
 	Fingerprints []Fingerprint `xml:"Fingerprints>Fingerprint json:"Fingerprints>Fingerprint"`
 	Privileges   string        `xml:"Privileges"              json:"Privileges"`
 	Description  string        `xml:"Description"             json:"Description"`
-	Rationale    string        `xml:"Rationale"               json:"Rationale"`
+	//Rationale    string        `xml:"Rationale"               json:"Rationale"`
+	Advice string `xml:"Advice"                  json:"Advice"`
 }
 
 func (b *Benchmark) AddPlatform(id string, label string, version string) {
