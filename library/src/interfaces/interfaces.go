@@ -24,13 +24,14 @@ type DbHandler interface {
 // Methods used to access data are tightly coupled with the chosen backend
 // Here we define the interface with the goal of make them
 // loosely coupled
-type repositories interface {
+/*type repositories interface {
 	Lookup(f Filter, repo string) ([]domain.Domain, error)
 	AddDocument(d Document, repo string) error
 	DeleteDocumentById(objtype string, id string, repo string) error
 	AddRepo(dbh DbHandler, repo string) error
-}
+}*/
 
 type Config struct {
-	Repositories repositories
+	//Repositories repositories
+	Repositories Repositories
 }

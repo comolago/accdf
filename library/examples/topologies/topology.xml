@@ -1,4 +1,13 @@
 <Topology>
+ <Entities>
+  <Entity id="94020F55-0A9B-4E82-88F1-C06EA30263C2" type="schema" name="mydatabase" user="testuser" password="testpassword" />
+  <Entity id="B3721C36-5AA0-4362-B3DF-06739ACE6102" type="URL" name="/url/to/test.php?action=test" user="testuser" password="testpassword" />
+ </Entities>
+ <ServiceDetails>
+  <ServiceDetail id="1FEDD939-A91F-43BC-B49E-35910D5C97F0" serviceid="" entityid="94020F55-0A9B-4E82-88F1-C06EA30263C2" />
+  <ServiceDetail id="667D0B11-C743-449C-8B5E-B714C7F62A59" serviceid="3D263265-31A9-4003-9F40-0FE3CB02F051" entityid="B3721C36-5AA0-4362-B3DF-06739ACE6102" />
+  <ServiceDetail id="97033A33-AD98-4A59-9E7F-548CC2B5B216" serviceid="F95F68F4-0D60-4A50-A1CF-40376A2A2CD7" entityid="B3721C36-5AA0-4362-B3DF-06739ACE6102" />
+ </ServiceDetails>
  <Services>
    <!-- We provide a different service instance for each connected endpoint -->
    <Service id="D08E7EFF-B4A1-4A1F-BE95-33DD8C2B00CB" protocol="tcp" name="LDAP" />

@@ -2,13 +2,14 @@ package main
 
 import (
 	"domain"
-	"encoding/xml"
+
 	"fmt"
 	"infrastructure"
 	"interfaces"
 	"os"
 )
 
+//	"encoding/xml"
 //
 //	"path/filepath"
 //"encoding/xml"
@@ -23,7 +24,8 @@ func main() {
 	// interfaces
 	config := new(interfaces.Config)
 	// Add available repositories to the configuration handler
-	config.Repositories = interfaces.CreateRepositoriesMap()
+	//config.Repositories = interfaces.CreateRepositoriesMap()
+	config.Repositories.Init()
 	if err := config.Repositories.AddRepo(elasticSearch, "Benchmarks"); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -46,12 +48,16 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	} else {
-		_, err := xml.Marshal(values[0])
-		if err != nil {
-			panic(err)
+		if values != nil {
+			//_, err := xml.Marshal(values[0])
+			//if err != nil {
+			//	panic(err)
+			//}
+			fmt.Printf("%s\n", values[0])
+			data, _ := values[0].ToXML()
+			fmt.Printf("\n\n%s\n", data)
+			//fmt.Printf("%s\n", values[0].GetId())
 		}
-		//fmt.Printf("%s\n", data)
-		fmt.Printf("%s\n", values[0].GetId())
 	}
 
 	/*
@@ -81,10 +87,10 @@ func main() {
 			os.Exit(1)
 		}
 	*/
-	if err := config.Repositories.DeleteDocumentById("benchmarks", "AV1wxsDxjObW0cXTTPhb", "Benchmarks"); err != nil {
+	/*if err := config.Repositories.DeleteDocumentById("benchmarks", "AV1wxsDxjObW0cXTTPhb", "Benchmarks"); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
-	}
+	}*/
 
 	fmt.Printf("\n\nFinito\n")
 }

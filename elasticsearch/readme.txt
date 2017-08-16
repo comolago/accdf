@@ -27,7 +27,7 @@ curl -i -XPOST 'http://localhost:9200/accdf/benchmarks' -d '
   "Fingerprints":null,
   "Privileges":"\n    Cmnd_Alias                ROUTE=/sbin/route\n    Defaults!ROUTE        !requiretty\n    mcarcano  ALL=(ALL) NOPASSWD:ROUTE\n  ",
   "Description":"\n    Test connection\n  ",
-  "Rationale":"\n    Returns STATUS=0 if OK, STATUS=1 connection failed\n  "
+  "Advice":"\n    Returns STATUS=0 if OK, STATUS=1 connection failed\n  "
 }'
 
 curl -i -XGET 'http://localhost:9200/accdf/benchmarks/_search'
