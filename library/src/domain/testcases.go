@@ -7,39 +7,83 @@ import (
 )
 
 type Details struct {
-	Severity            string `xml:"severity,attr"            json:"severity,attr"`
-	Tolerancepercentage string `xml:"tolerancepercentage,attr" json:"tolerancepercentage,attr"`
-	Owner               string `xml:"owner,attr"               json:"owner,attr"`
+	Severity                  string `xml:"severity,attr"            json:"severity,attr"`
+	Minimum_health_percentage string `xml:"minimum_health,attr" json:"minimum_health,attr"`
+	Responsible               string `xml:"responsible,attr"               json:"responsible,attr"`
 	//_                   string `xml:"#text"               json:"#text"`
 }
 
 type Test struct {
-	Name      string     `xml:"name,attr" json:"name,attr"`
-	Label     string     `xml:"label,attr" json:"label,attr"`
-	TestSteps []TestStep `xml:"TestSteps>TestStep"  json:"TestSteps>TestStep"`
+	Name       string      `xml:"name,attr" json:"name,attr"`
+	Title      string      `xml:"title,attr" json:"title,attr"`
+	TestSteps  []TestStep  `xml:"TestSteps>TestStep"  json:"TestSteps>TestStep"`
+	Parameters []Parameter `xml:"Parameters>Parameter"  json:"Parameters>Parameter"`
+}
+
+func (t *Test) AddTestStep(step TestStep) {
+	t.TestSteps = append(t.TestSteps, step)
+}
+
+func (t *Test) AddParameter(parameter Parameter) {
+	t.Parameters = append(t.Parameters, parameter)
 }
 
 type TestStep struct {
-	Id          string `xml:"id,attr"          json:"id,attr"`
-	IP          string `xml:"ip,attr"          json:"ip,attr"`
-	Protocol    string `xml:"protocol,attr"    json:"protocol,attr"`
-	Port        string `xml:"port,attr"        json:"port,attr"`
-	Description string `xml:"description,attr" json:"description,attr"`
+	Id       string `xml:"id,attr"          json:"id,attr"`
+	Dst_IP   string `xml:"dst_ip,attr"          json:"dst_ip,attr"`
+	Protocol string `xml:"protocol,attr"    json:"protocol,attr"`
+	Port     string `xml:"port,attr"        json:"port,attr"`
+	//	Description string `xml:"description,attr" json:"description,attr"`
+}
+
+type Parameter struct {
+	Name   string `xml:"name,attr"          json:"name,attr"`
+	Engine string `xml:"engine,attr"        json:"engine,attr"`
+	Source string `xml:"source,attr"        json:"source,attr"`
+	Query  string `xml:"query,attr"         json:"query,attr"`
+}
+
+type Inject struct {
+	Classes []Class `xml:"Classes"             json:"Classes"`
+}
+
+func (i *Inject) AddClass(class string) {
+	var cls Class
+	cls.Class = class
+	i.Classes = append(i.Classes, cls)
+}
+
+type Class struct {
+	Class string `xml:"Class"               json:"Class"`
 }
 
 type TestCase struct {
-	Id          string  `xml:"id,attr"             json:"id,attr"`
-	Name        string  `xml:"name,attr"           json:"name,attr"`
-	Benchmark   string  `xml:"benchmark,attr"      json:"benchmark,attr"`
-	Description string  `xml:"Description"         json:"Description"`
-	Detail      Details `xml:"Details"           json:"Details"`
-	Tests       []Test  `xml:"Tests>Test"          json:"Tests>Test"`
+	Id           string       `xml:"id,attr"             json:"id,attr"`
+	Name         string       `xml:"name,attr"           json:"name,attr"`
+	Title        string       `xml:"title,attr"          json:"title,attr"`
+	Benchmark    string       `xml:"benchmark,attr"      json:"benchmark,attr"`
+	Description  string       `xml:"Description"         json:"Description"`
+	Detail       Details      `xml:"Details"             json:"Details"`
+	Tests        []Test       `xml:"Tests>Test"          json:"Tests>Test"`
+	Inject       Inject       `xml:"Inject"              json:"Inject"`
+	Dependencies []Dependency `xml:"Dependencies>Dependency"  json:"Dependencies>Dependency"`
 }
 
-func (t *TestCase) AddTest(name string, label string) {
+type Dependency struct {
+	Name      string `xml:"name,attr"          json:"name,attr"`
+	Type      string `xml:"type,attr"          json:"type,attr"`
+	TestSuite string `xml:"testsuite,attr"     json:"testsuite,attr"`
+	Title     string `xml:"title,attr"         json:"title,attr"`
+}
+
+func (t *TestCase) AddDependency(dep Dependency) {
+	t.Dependencies = append(t.Dependencies, dep)
+}
+
+func (t *TestCase) AddTest(name string, title string) {
 	var ts Test
 	ts.Name = name
-	ts.Label = label
+	ts.Title = title
 	t.Tests = append(t.Tests, ts)
 }
 
