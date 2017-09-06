@@ -1,3 +1,5 @@
+python -m json.tool
+
 curl -XDELETE 'http://localhost:9200/accdf/benchmarks/AVy32ccTJokG6S6_ipRw'
 curl -XDELETE 'http://localhost:9200/accdf'
 
